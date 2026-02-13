@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Be My Valentine ❤️</title>
+
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
 <style>
@@ -18,7 +19,6 @@ body {
     justify-content: center;
     align-items: center;
     font-family: sans-serif;
-    position: relative;
 }
 
 .card {
@@ -33,6 +33,7 @@ body {
 
 h1 { color: #e63946; margin: 10px 0; }
 p { color: #555; }
+
 img {
     max-width: 80%;
     max-height: 200px;
@@ -66,20 +67,7 @@ button {
     font-weight: bold;
 }
 
-/* Music Button */
-#playMusicBtn {
-    position: fixed;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 999;
-    background: #e63946;
-    color: white;
-    border: none;
-    border-radius: 20px;
-}
-
-/* Shake animation */
+/* Shake Animation */
 @keyframes shake {
     0% { transform: translateX(0); }
     20% { transform: translateX(-10px); }
@@ -88,6 +76,7 @@ button {
     80% { transform: translateX(10px); }
     100% { transform: translateX(0); }
 }
+
 .shake {
     animation: shake 0.6s;
 }
@@ -95,13 +84,9 @@ button {
 </head>
 <body>
 
-<button id="playMusicBtn">Play Music 🎵</button>
-
+<!-- Background Music (Replace with your hosted MP3 link) -->
 <audio id="bgMusic" loop>
-  <source src="data:audio/mp3;base64,
-SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU2LjMyLjEwMAAAAAAAAAAAAAAA//tQxAADB
-... (BASE64 TRUNCATED FOR CLARITY — REPLACE WITH FULL AUDIO) ...
-" type="audio/mp3">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
 </audio>
 
 <div class="card">
@@ -121,10 +106,23 @@ SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU2LjMyLjEwMAAAAAAAAAAAAAAA//tQxAADB
 </div>
 
 <script>
+
 /* Initialize EmailJS */
 (function(){
     emailjs.init("ROmKtuv3dv8eS25Fr");
 })();
+
+/* Auto play music on first interaction */
+const music = document.getElementById("bgMusic");
+
+function startMusicOnce() {
+    music.play().catch(()=>{});
+    document.removeEventListener("click", startMusicOnce);
+    document.removeEventListener("touchstart", startMusicOnce);
+}
+
+document.addEventListener("click", startMusicOnce);
+document.addEventListener("touchstart", startMusicOnce);
 
 /* YES Button */
 function yesClicked(){
@@ -132,13 +130,13 @@ function yesClicked(){
     const msg = document.getElementById("loveMessage");
     msg.style.display = "block";
     msg.innerHTML = "💕 Yayyyy! 💕 <br>You just made my heart happiest ❤️";
-    document.getElementById("bgMusic").pause();
     sendEmail("YES ❤️");
 }
 
-/* NO Button shakes on every click */
+/* NO Button */
 let count = 0;
 const noBtn = document.getElementById("noBtn");
+
 noBtn.addEventListener("click", function(){
     count++;
     const msg = document.getElementById("loveMessage");
@@ -147,34 +145,32 @@ noBtn.addEventListener("click", function(){
     if(count === 1){
         this.innerText = "Really 🥺";
         msg.innerHTML = "Really? 🥺";
-    } else if(count === 2){
+    } 
+    else if(count === 2){
         this.innerText = "Think again 😭";
         msg.innerHTML = "I’ll wait 💕";
-    } else {
+    } 
+    else {
         this.innerText = "Click YES ❤️";
         msg.innerHTML = "Last chance 😌";
     }
 
-    /* Trigger shake every click */
-    this.classList.remove("shake");  // reset animation
-    void this.offsetWidth;           // force reflow
+    /* Shake every click */
+    this.classList.remove("shake");
+    void this.offsetWidth;
     this.classList.add("shake");
 
     sendEmail("NO 🙈 (" + count + ")");
 });
 
-/* Play music */
-const musicBtn = document.getElementById("playMusicBtn");
-const music = document.getElementById("bgMusic");
-musicBtn.addEventListener("click", function(){
-    music.play().catch(()=>{});
-    musicBtn.style.display = "none";
-});
-
-/* Send EmailJS */
+/* EmailJS */
 function sendEmail(decision){
-    emailjs.send("service_oii5uud", "template_eyq8ypd", { decision, name: "VEDA" });
+    emailjs.send("service_oii5uud", "template_eyq8ypd", {
+        decision: decision,
+        name: "VEDA"
+    });
 }
+
 </script>
 
 </body>
