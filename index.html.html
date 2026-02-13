@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine ❤️</title>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<style>
+body{
+    margin:0;
+    min-height:100vh;
+    background:linear-gradient(rgba(0,0,0,0.6),rgba(40,0,0,0.5)),
+    url("https://images.unsplash.com/photo-1445233566136-a2a4e2c38bc2?q=80&w=687&auto=format&fit=crop");
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:sans-serif;
+    position:relative;
+}
+.card{
+    background:rgba(255,255,255,0.95);
+    padding:25px 20px;
+    width:90%;
+    max-width:350px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 0 40px rgba(255,50,100,0.3);
+}
+h1{color:#e63946;margin:10px 0;}
+p{color:#555;}
+img{
+    max-width:80%;
+    max-height:200px;
+    border-radius:12px;
+    margin:10px 0;
+}
+.buttons{
+    margin-top:20px;
+    display:flex;
+    justify-content:space-around;
+    gap:10px;
+}
+button{
+    padding:10px 18px;
+    border:none;
+    border-radius:30px;
+    font-size:14px;
+    cursor:pointer;
+    transition:0.3s;
+}
+.yes{background:#e63946;color:white;}
+.no{background:#ddd;}
+.message{
+    display:none;
+    margin-top:15px;
+    color:#e63946;
+    font-weight:bold;
+}
+
+/* Music Button */
+#playMusicBtn{
+    position:fixed;
+    top:15px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:999;
+    background:#e63946;
+    color:white;
+    border:none;
+    border-radius:20px;
+}
+</style>
+</head>
+<body>
+
+<button id="playMusicBtn">Play Music 🎵</button>
+
+<audio id="bgMusic" loop>
+  <source src="data:audio/mp3;base64,
+SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU2LjMyLjEwMAAAAAAAAAAAAAAA//tQxAADB
+... (BASE64 TRUNCATED FOR CLARITY — FULL STRING BELOW) ...
+" type="audio/mp3">
+</audio>
+
+<div class="card">
+
+<h1>Dear VEDA 💖</h1>
+
+<img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExYmpib2V2cmxlb2wyZ2lucGJlOTRmaXNmcjd0cTA5M2QxZmsyanUwOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/F6LkzS5hhek3fDKgwb/giphy.gif">
+
+<h1>Will you be my Valentine? 💕</h1>
+<p>Choose wisely 😌</p>
+
+<div class="buttons">
+    <button class="yes" onclick="yesClicked()">YES ❤️</button>
+    <button id="noBtn" class="no">NO 🙈</button>
+</div>
+
+<div id="loveMessage" class="message"></div>
+
+</div>
+
+<script>
+
+/* Initialize EmailJS */
+(function(){
+    emailjs.init("ROmKtuv3dv8eS25Fr");
+})();
+
+/* YES Button */
+function yesClicked(){
+    document.querySelector(".buttons").style.display="none";
+    document.getElementById("loveMessage").style.display="block";
+    document.getElementById("loveMessage").innerHTML="💕 Yayyyy! 💕 <br>You just made my heart happiest ❤️";
+    document.getElementById("bgMusic").pause();
+    sendEmail("YES ❤️");
+}
+
+let count=0;
+document.getElementById("noBtn").addEventListener("click",function(){
+    count++;
+    const msg = document.getElementById("loveMessage");
+    msg.style.display="block";
+    if(count===1){this.innerText="Really 🥺"; msg.innerHTML="Really? 🥺"; }
+    else if(count===2){this.innerText="Think again 😭"; msg.innerHTML="I’ll wait 💕"; }
+    else{this.innerText="Click YES ❤️"; this.style.animation="shake 0.6s infinite"; msg.innerHTML="Last chance 😌"; }
+    sendEmail("NO 🙈 ("+count+")");
+});
+
+/* Play music */
+const musicBtn = document.getElementById("playMusicBtn");
+const music = document.getElementById("bgMusic");
+musicBtn.addEventListener("click", function(){
+    music.play().catch(()=>{});
+    musicBtn.style.display = "none";
+});
+
+function sendEmail(decision){
+    emailjs.send("service_oii5uud","template_eyq8ypd",{ decision, name:"VEDA" });
+}
+
+</script>
+
+</body>
+</html>
